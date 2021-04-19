@@ -3,7 +3,7 @@
  *
  *  Copyright (c) 2009 - 2014 RoboPeak Team
  *  http://www.robopeak.com
- *  Copyright (c) 2014 - 2019 Shanghai Slamtec Co., Ltd.
+ *  Copyright (c) 2014 - 2018 Shanghai Slamtec Co., Ltd.
  *  http://www.slamtec.com
  *
  */
@@ -32,35 +32,21 @@
  *
  */
 
-#pragma once
+#include "src/arch/linux/arch_linux.h"
 
-#pragma warning (disable: 4996)
-#define _CRT_SECURE_NO_WARNINGS
-
-#ifndef WINVER
-#define WINVER		0x0500
-#endif
-
-#ifndef _WIN32_WINNT
-#define _WIN32_WINNT	0x0501
-#endif
-
-
-#ifndef _WIN32_IE
-#define _WIN32_IE	0x0501
-#endif
-
-#ifndef _RICHEDIT_VER
-#define _RICHEDIT_VER	0x0200
-#endif
-
-
-#include <stddef.h>
-#include <stdio.h>
-#include <windows.h>
-#include <stdlib.h>   //for memcpy etc..
-#include <process.h>
-#include <direct.h> 
-
-
-#include "timer.h"
+namespace rp{ namespace arch{
+_u64 rp_getus()
+{
+    struct timespec t;
+    t.tv_sec = t.tv_nsec = 0;
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    return t.tv_sec*1000000LL + t.tv_nsec/1000;
+}
+_u32 rp_getms()
+{
+    struct timespec t;
+    t.tv_sec = t.tv_nsec = 0;
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    return t.tv_sec*1000L + t.tv_nsec/1000000L;
+}
+}}
